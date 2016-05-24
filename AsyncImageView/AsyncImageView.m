@@ -577,7 +577,7 @@ NSString *const AsyncImageErrorKey = @"error";
 
 - (void)setImageURL:(NSURL *)imageURL
 {
-	[[AsyncImageLoader sharedLoader] loadImageWithURL:imageURL target:self action:@selector(setImage:)];
+    [[AsyncImageLoader sharedLoader] loadImageWithURL:imageURL target:self success:@selector(setImage:) failure:@selector(failure)];
 }
 
 - (NSURL *)imageURL
@@ -663,6 +663,11 @@ NSString *const AsyncImageErrorKey = @"error";
         [self.layer addAnimation:animation forKey:nil];
     }
     super.image = image;
+    [self.activityView stopAnimating];
+}
+
+- (void)failure {
+    [self setImage:[UIImage imageNamed:@"imageNotFound"]];
     [self.activityView stopAnimating];
 }
 
